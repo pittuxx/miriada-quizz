@@ -14,10 +14,20 @@ exports.load = function(req,res,next,quizId){
 
 //GET /quizes/index
 exports.index = function(req,res){
-	models.Quiz.findAll().then(function(quizes){
-		res.render('quizes/index',{quizes: quizes});
-	}).catch(function(error){next(error);})
+	var search = req.query.search;
+	if(search) {
+		search = '%' + search.replace(' ', '%','g') + '%';
+		models.Quiz.findAll({where: ["pregunta LIKE ?", search]}).then(function(quizes){
+			//res.render('quizes/search');
+				res.render('quizes/index',{quizes: quizes});			
+		}).catch(function(error){next(error);})
+	} else {
+		models.Quiz.findAll().then(function(quizes){
+				res.render('quizes/index',{quizes: quizes});
+		}).catch(function(error){next(error);})
+	}
 };
+
 
 //GET /quizes/question
 exports.show = function(req,res){
