@@ -17,6 +17,10 @@ img {
 	margin:50px 0;
 }
 table {margin:0 auto;}
+#ErrorMsgs {
+	color:#f61;
+	font-size: smaler;
+}
 
 /*body {
   padding: 50px;
