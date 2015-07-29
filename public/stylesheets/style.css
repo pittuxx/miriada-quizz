@@ -21,7 +21,14 @@ table {margin:0 auto;}
 	color:#f61;
 	font-size: smaler;
 }
-
+.delete {
+  background:none!important;
+  border:none;
+  padding:0!important;
+  font: inherit;
+  cursor: pointer;
+  color:-webkit-link;
+}
 /*body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
