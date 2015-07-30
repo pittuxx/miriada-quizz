@@ -3,4 +3,10 @@
 	<p><input type="text" name="respuesta" placeholder="Respuesta"></p>
 	<p><input type="submit" value="Enviar"></p>
 </form>
-
+<br>
+<p><a href="/quizes/<%= quiz.id %>/comments/new"><button>Añadir Comentario</button></a></p>
+<br>
+<p><strong>Comentarios</strong></p>
+<% for(var i in quiz.comments) {%>
+	<p>- <%= quiz.comments[i].texto %></p>
+<%} %>
