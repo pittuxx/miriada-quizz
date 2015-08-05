@@ -12,6 +12,8 @@ router.get('/', function(req, res) {
 
 // Autoload de comandos con quizId
 router.param('quizId', quizController.load);
+// Autoload :commentId
+router.param('commentId', commentController.load);
 
 /* Rutas de sesión */
 router.get('/login',	sessionController.new);
@@ -31,6 +33,9 @@ router.delete('/quizes/:quizId(\\d+)',			sessionController.loginRequired, quizCo
 /* Rutas de comentarios */
 router.get('/quizes/:quizId(\\d+)/comments/new',	commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments', 		commentController.create);
+// Mal, debería r con put
+router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', 
+	sessionController.loginRequired, commentController.publish);
 
 /* GET credits page */
 router.get('/author',function(req,res){
