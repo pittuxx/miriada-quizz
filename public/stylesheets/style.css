@@ -3,7 +3,7 @@
 body {font:16px georgia, serif;}
 
 #page-wrap {margin:2% auto;color:white;}
-#page-wrap > .main {border:1px solid #999;padding:1%;margin-bottom:1px;color:black;}
+#page-wrap > .main {border:1px solid #999;padding:1%;margin-bottom:1px;color:black;background: white;}
 
 section > div {padding:20px;}
 header, nav, section, footer {background: #eee;text-align: center}
@@ -28,6 +28,9 @@ table {margin:0 auto;}
   font: inherit;
   cursor: pointer;
   color:-webkit-link;
+}
+.right {
+  float:right;
 }
 /*body {
   padding: 50px;
