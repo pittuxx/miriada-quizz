@@ -42,4 +42,7 @@ router.get('/author',function(req,res){
 	res.render('author.ejs', {title: 'Créditos', errors: [] });
 });
 
+/* Ruta de estadísticas */
+router.get('/quizes/statistics', quizController.statistics);
+
 module.exports = router;

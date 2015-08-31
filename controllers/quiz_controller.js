@@ -111,7 +111,6 @@ exports.update = function(req,res){
 	)
 };
 
-
 //DELETE /quizes/:id
 exports.destroy = function(req,res){
 	req.quiz.destroy().then(function(){
@@ -119,16 +118,34 @@ exports.destroy = function(req,res){
 	}).catch(function(error){ next(error) });
 };
 
-//GET /quizes/question
-//exports.question = function(req, res){
-//	res.render('quizes/question', {pregunta: 'Capital de Italia'});
-//};
+//GET /quizes/statistics
+exports.statistics = function(req,res){
+	var staticsObject = {};
 
-//GET /quizes/answer
-//exports.answer = function(req, res){
-//	if (req.query.respuesta === 'Roma'){
-//		res.render('quizes/answer', {respuesta: 'Correcto'});
-//	} else {
-//		res.render('quizes/answer', {respuesta: 'Incorrecto'});
-//	}
-//};
+	models.Quiz.findAndCountAll().then(
+		function(quizAmount){
+			staticsObject.numQuizes = quizAmount.count;
+
+			models.Comment.findAndCountAll(
+					{ where: {publicado:1}}
+				).then(function(CommentsPublicados){
+					staticsObject.numCommentsPublicados = CommentsPublicados.count
+					staticsObject.mediaComments = staticsObject.numCommentsPublicados / staticsObject.numQuizes;
+
+					models.Quiz.findAndCountAll({
+							include: [{model: models.Comment, required: true }]
+						}).then(function(conComments){
+							staticsObject.siComments = conComments.count
+							staticsObject.noComments = staticsObject.numQuizes - staticsObject.siComments;
+
+							res.render('quizes/statistics',{
+								object: staticsObject,
+								errors: []
+							});
+						}
+					).catch(function(error){next(error);});
+				}
+			).catch(function(error){next(error);});
+		}
+	).catch(function(error){next(error);});
+};
