@@ -120,32 +120,36 @@ exports.destroy = function(req,res){
 
 //GET /quizes/statistics
 exports.statistics = function(req,res){
-	var staticsObject = {};
+	var statisticsObject = {};
 
-	models.Quiz.findAndCountAll().then(
+	models.Quiz.findAll().then(
 		function(quizAmount){
-			staticsObject.numQuizes = quizAmount.count;
+			statisticsObject.numQuizes = quizAmount.length;
 
-			models.Comment.findAndCountAll(
-					{ where: {publicado:1}}
-				).then(function(CommentsPublicados){
-					staticsObject.numCommentsPublicados = CommentsPublicados.count
-					staticsObject.mediaComments = staticsObject.numCommentsPublicados / staticsObject.numQuizes;
+			models.Comment.findAll()
+				.then(function(Comments){
+					statisticsObject.numCommentsPublicados = 0;
+					for(var i=0; i<Comments.length;i++){
+						if(Comments[i].publicado === true){
+							statisticsObject.numCommentsPublicados += 1;
+						}
+					}
+					statisticsObject.mediaComments = statisticsObject.numCommentsPublicados / statisticsObject.numQuizes;
 
-					models.Quiz.findAndCountAll({
+					models.Quiz.findAll({
 							include: [{model: models.Comment, required: true }]
 						}).then(function(conComments){
-							staticsObject.siComments = conComments.count
-							staticsObject.noComments = staticsObject.numQuizes - staticsObject.siComments;
+							statisticsObject.siComments = conComments.length;
+							statisticsObject.noComments = statisticsObject.numQuizes - statisticsObject.siComments;
 
 							res.render('quizes/statistics',{
-								object: staticsObject,
+								object: statisticsObject,
 								errors: []
 							});
 						}
-					).catch(function(error){next(error);});
+					).catch(function(error){next(error)});
 				}
-			).catch(function(error){next(error);});
+			).catch(function(error){next(error)});
 		}
-	).catch(function(error){next(error);});
+	).catch(function(error){next(error)});
 };
